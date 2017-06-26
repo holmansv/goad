@@ -32,7 +32,7 @@ func jsonFromRegionsAggData(result queue.RegionsAggData) (string, error) {
 }
 
 func serveResults(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/goad" {
+	if r.URL.Path != "/load" {
 		http.Error(w, "Not found", 404)
 		return
 	}
@@ -149,7 +149,7 @@ func health(w http.ResponseWriter, r *http.Request) {
 
 // Serve waits for connections and serves the results
 func Serve() {
-	http.HandleFunc("/goad", serveResults)
+	http.HandleFunc("/load", serveResults)
 	http.HandleFunc("/_health", health)
 	err := http.ListenAndServe(*addr, nil)
 	if err != nil {
