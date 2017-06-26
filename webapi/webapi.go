@@ -82,6 +82,15 @@ func serveResults(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	headers := r.URL.Query()["header[]"]
+
+	method := r.URL.Query().Get("method")
+	if len(method) == 0 {
+		method = "GET"
+	}
+
+	body := r.URL.Query().Get("body")
+
 	config := goad.TestConfig{
 		URL:         url,
 		Concurrency: concurrency,
@@ -89,7 +98,9 @@ func serveResults(w http.ResponseWriter, r *http.Request) {
 		Timelimit:   timelimit,
 		Timeout:     timeout,
 		Regions:     regions,
-		Method:      "GET",
+		Headers:     headers,
+		Method:      method,
+		Body:        body,
 	}
 
 	test, testerr := goad.NewTest(&config)
